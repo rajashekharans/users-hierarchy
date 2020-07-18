@@ -1,0 +1,32 @@
+{
+    "name": "rajashekharans/user-hierarchy",
+    "authors": [
+        {
+            "name": "Raj Soundrarajan",
+            "email": "reachtoraj@outlook.com"
+        }
+    ],
+    "require": {
+        "pimple/pimple": "^3.2",
+        "symfony/console": "^4.2"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "UserHierarchy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "UserHierarchy\\Tests\\Unit\\": "tests/unit/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.1"
+    }
+}
