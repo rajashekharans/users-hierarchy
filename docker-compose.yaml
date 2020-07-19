@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  user-hierarchy:
+    container_name: user-hierarchy
+    build:
+      context: ./
+      dockerfile: etc/php/Dockerfile
+    volumes:
+      - ./:/var/www
+      - ./coverage:/opt/phpstorm-coverage
