@@ -25,10 +25,13 @@ class UserHierarchyCommand extends Command
             ->setDescription('Runs User Hierarchy App');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
+        $output->writeln('Setting up roles...');
         $this->userHierarchyCollection->setRoles($this->getRoles());
 
+
+        $output->writeln('Setting up users...');
         $this->userHierarchyCollection->setUsers($this->getUsers());
 
         $subordinates = $this->userHierarchyCollection->getSubordinates(3);

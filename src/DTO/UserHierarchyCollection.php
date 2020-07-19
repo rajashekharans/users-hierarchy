@@ -37,15 +37,8 @@ class UserHierarchyCollection
 
     public function areWeRelated(int $parent, int $child): bool
     {
-        $childParent = -1;
-
          // Loop through roles to get the parent of the $child
-        foreach($this->roles as $role) {
-            if ($role->getId() == $child) {
-                $childParent = $role->getParent();
-                break;
-            }
-        }
+        $childParent = $this->getParentOfChild($child);
 
         // Return false, since $child is root
         if ($childParent == 0) {
@@ -66,22 +59,42 @@ class UserHierarchyCollection
     {
         $subordinates = [];
 
-        $current_role = -1;
-
-        foreach($this->users as $user) {
-            if ($user->getId() == $userId) {
-                $current_role = $user->getRole();
-                break;
-            }
-        }
+        $currentRole = $this->getUserRole($userId);
 
         foreach($this->users as $user) {
             // checking if $user role is related to $current_role, if true, $user is subordinate
-            if ($this->areWeRelated($current_role, $user->getRole())) {
+            if ($this->areWeRelated($currentRole, $user->getRole())) {
                 $subordinates[] = $user->jsonSerialize();
             }
         }
 
         return json_encode($subordinates);
+    }
+
+
+    private function getUserRole(int $userId): int
+    {
+        $currentRole = -1;
+
+        foreach ($this->users as $user) {
+            if ($user->getId() == $userId) {
+                $currentRole = $user->getRole();
+                break;
+            }
+        }
+        return $currentRole;
+    }
+
+    private function getParentOfChild(int $child): int
+    {
+        $childParent = -1;
+
+        foreach ($this->roles as $role) {
+            if ($role->getId() == $child) {
+                $childParent = $role->getParent();
+                break;
+            }
+        }
+        return $childParent;
     }
 }

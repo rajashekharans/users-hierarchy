@@ -26,6 +26,63 @@ class UserHierarchyCollectionTest extends TestCase
         $this->assertEquals($result, $this->getSampleUsersObjectArray());
     }
 
+    public function testAreWeRelatedForParentChildReturnsTrue()
+    {
+        $collection = new UserHierarchyCollection();
+        $collection->setRoles($this->getSampleRolesArray());
+        $collection->setUsers($this->getSampleUsersArray());
+
+        $result = $collection->areWeRelated(1, 2);
+
+        $this->assertEquals(true, $result);
+    }
+
+    public function testAreWeRelatedForParentChildReturnsFalse()
+    {
+        $collection = new UserHierarchyCollection();
+        $collection->setRoles($this->getSampleRolesArray());
+        $collection->setUsers($this->getSampleUsersArray());
+
+        $result = $collection->areWeRelated(2, 1);
+
+        $this->assertEquals(false, $result);
+    }
+
+    public function testAreWeRelatedForParentGrandChildReturnsTrue()
+    {
+        $collection = new UserHierarchyCollection();
+        $collection->setRoles($this->getSampleRolesArray());
+        $collection->setUsers($this->getSampleUsersArray());
+
+        $result = $collection->areWeRelated(1, 4);
+
+        $this->assertEquals(true, $result);
+    }
+
+    public function testGetSubordinates(): void
+    {
+        $collection = new UserHierarchyCollection();
+        $collection->setRoles($this->getSampleRolesArray());
+        $collection->setUsers($this->getSampleUsersArray());
+
+        $expected = json_encode([
+            [
+                'Id' => 2,
+                'Name' => 'Emily Employee',
+                'Role' =>4
+            ],
+            [
+                'Id' => 5,
+                'Name' => 'Steve Trainer',
+                'Role' => 5
+            ],
+        ]);
+
+        $result = $collection->getSubordinates(3);
+
+        $this->assertEquals($expected, $result);
+    }
+
     private function getSampleRolesArray(): array
     {
         return [
